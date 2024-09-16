@@ -1,4 +1,4 @@
-import { LoginFormData, LoginResponse, Response } from "@/types";
+import { LoginFormData, LoginResponse, Response, TUser } from "@/types";
 import axiosInstance from "../axiosInstance";
 import { toast } from "@/hooks/use-toast";
 
@@ -11,11 +11,23 @@ export const login: (
       data
     );
     return response.data;
-  } catch (error : any) {
+  } catch (error: any) {
     toast({
-        title: "Error",
-        description: error?.message ?? "Invalid email or password"
+      title: "Error",
+      description: error?.message ?? "Invalid email or password",
     });
-    return null
+    return null;
   }
 };
+
+export const tokenValidate: () => Promise<Response<{user : TUser}> | null> =
+  async () => {
+    try {
+      const response = await axiosInstance.get<Response<{user : TUser}>>(
+        "/auth/validate-token"
+      );
+      return response.data;
+    } catch (error) {
+      return null;
+    }
+  };

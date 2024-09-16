@@ -1,6 +1,7 @@
 // generate axios instance
 
 import axios from "axios";
+import Cookies from "js-cookie";
 
 //TODO: Change the baseURL to actual API URL and use environment variables
 const baseURL = process.env.NODE_ENV === 'production' ? 'https://api.example.com' : 'http://localhost:8000';
@@ -8,7 +9,8 @@ const baseURL = process.env.NODE_ENV === 'production' ? 'https://api.example.com
 const axiosInstance = axios.create({
   baseURL: `${baseURL}/api`,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'authorization' : `Bearer ${Cookies.get("authorization")}`
   }
 });
 
