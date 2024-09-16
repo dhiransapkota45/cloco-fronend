@@ -1,20 +1,21 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { AuthProvider } from '@/contexts/AuthContext'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
-import LoginPage from '@/pages/login'
-import RegisterPage from '@/pages/register'
-import UserListingPage from '@/pages/user'
-import MusicListingPage from '@/pages/music'
-import ArtistListingPage from '@/pages/artist'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import LoginPage from "@/pages/login";
+import RegisterPage from "@/pages/register";
+import UserListingPage from "@/pages/user";
+import MusicListingPage from "@/pages/music";
+import ArtistListingPage from "@/pages/artist";
+import { Toaster } from "@/components/ui/toaster";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router>
+      <Router>
+        <AuthProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -24,10 +25,11 @@ function App() {
               <Route path="/artists" element={<ArtistListingPage />} />
             </Route>
           </Routes>
-        </Router>
-      </AuthProvider>
+        </AuthProvider>
+      </Router>
+      <Toaster />
     </QueryClientProvider>
-  )
+  );
 }
 
-export default App
+export default App;

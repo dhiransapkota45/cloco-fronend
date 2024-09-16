@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { LoginFormData } from '@/types'
+import { login as loginApi } from '@/service/api/auth'
+import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom'
 
 interface AuthContextType {
   user: any
-  login: (email: string, password: string) => Promise<void>
+  login: (data : LoginFormData) => Promise<void>
   logout: () => void
   register: (email: string, password: string) => Promise<void>
   isAuthenticated: boolean
@@ -14,6 +18,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>(null)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
@@ -35,18 +41,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await axios.post('/api/login', { email, password })
-      const { accessToken, refreshToken } = response.data
-      localStorage.setItem('accessToken', accessToken)
-      localStorage.setItem('refreshToken', refreshToken)
-      setUser(response.data.user)
-      setIsAuthenticated(true)
-    } catch (error) {
-      throw new Error('Login failed')
+  const login = async (data: LoginFormData) => {
+    const response = await loginApi(data);
+    if(response?.success){
+      Cookies.set("authorization", response?.data?.accessToken ?? "");
+      setIsAuthenticated(true);
+      navigate("/");
     }
-  }
+  };
 
   const logout = () => {
     localStorage.removeItem('accessToken')
