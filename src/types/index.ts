@@ -17,8 +17,8 @@ export type TUserPayload = {
     last_name: string;
     email: string;
     password: string;
-    phone: number;
-    dob : Date;
+    phone: string;
+    dob : string;
     gender : "m" | "f" | "o";
     address : string;
     role : "super_admin" | "artist_manager" | "artist";

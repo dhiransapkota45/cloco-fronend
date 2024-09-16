@@ -9,7 +9,7 @@ import MusicListingPage from "@/pages/music";
 import ArtistListingPage from "@/pages/artist";
 import { Toaster } from "@/components/ui/toaster";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<UserListingPage />} />
+              <Route path="/users" element={<UserListingPage />} />
               <Route path="/music" element={<MusicListingPage />} />
               <Route path="/artists" element={<ArtistListingPage />} />
             </Route>

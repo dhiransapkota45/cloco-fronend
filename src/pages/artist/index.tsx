@@ -35,13 +35,13 @@ export default function ArtistListingPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {artists?.map((artist) => (
+            {/* {artists?.map((artist) => (
               <TableRow key={artist.id}>
                 <TableCell>{artist.id}</TableCell>
                 <TableCell>{artist.name}</TableCell>
                 <TableCell>{artist.genre}</TableCell>
               </TableRow>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </CardContent>

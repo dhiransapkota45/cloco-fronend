@@ -1,29 +1,30 @@
-import { useQuery } from 'react-query'
-import axios from 'axios'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
-interface User {
-  id: number
-  name: string
-  email: string
-}
-
-const fetchUsers = async () => {
-  const { data } = await axios.get<User[]>('/api/users')
-  return data
-}
+import { useQuery } from "react-query";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { fetchUsers } from "@/service/api/user";
+import UserRow from "./components/UserRow";
+import AddUser from "./components/AddUser";
+import { QUERY_KEYS } from "@/data/constant";
 
 export default function UserListingPage() {
-  const { data: users, isLoading, error } = useQuery('users', fetchUsers)
+  const { data: users, isLoading, error } = useQuery({queryKey : QUERY_KEYS.USER, queryFn : fetchUsers});
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>An error has occurred</div>
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred</div>;
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className=" flex flex-row items-center justify-between">
         <CardTitle>User Listing</CardTitle>
+        <div>
+          <AddUser />
+        </div>
       </CardHeader>
       <CardContent>
         <Table>
@@ -32,19 +33,21 @@ export default function UserListingPage() {
               <TableHead>ID</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>DOB</TableHead>
+              <TableHead>Gender</TableHead>
+              <TableHead>Address</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* {users?.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-              </TableRow>
-            ))} */}
+            {users?.data?.map((user, index) => (
+              <UserRow user={user} index={index} key={user?.id} />
+            ))}
           </TableBody>
         </Table>
       </CardContent>
     </Card>
-  )
+  );
 }
