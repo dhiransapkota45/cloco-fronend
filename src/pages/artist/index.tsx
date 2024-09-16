@@ -1,50 +1,68 @@
-import { useQuery } from 'react-query'
-import axios from 'axios'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useQuery } from "react-query";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { QUERY_KEYS } from "@/data/constant";
+import { fetchArtists } from "@/service/api/artist";
+import AddArtist from "./components/AddArtist";
+import ArtistRow from "./components/ArtistRow";
 
-interface Artist {
-  id: number
-  name: string
-  genre: string
-}
+export default function UserListingPage() {
+  const {
+    data: artists,
+    isLoading,
+    error,
+  } = useQuery({ queryKey: QUERY_KEYS.ARTIST, queryFn: fetchArtists });
 
-const fetchArtists = async () => {
-  const { data } = await axios.get<Artist[]>('/api/artists')
-  return data
-}
-
-export default function ArtistListingPage() {
-  const { data: artists, isLoading, error } = useQuery('artists', fetchArtists)
-
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>An error has occurred</div>
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred</div>;
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className=" flex flex-row items-center justify-between">
         <CardTitle>Artist Listing</CardTitle>
+        <div>
+          <AddArtist header="Create Artist" title="Create Artist" />
+        </div>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead>S.No.</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Genre</TableHead>
+              <TableHead>Date of birth</TableHead>
+              <TableHead>Gender</TableHead>
+              <TableHead>address</TableHead>
+              <TableHead>First Release Year</TableHead>
+              <TableHead>Number of Albums Released</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* {artists?.map((artist) => (
-              <TableRow key={artist.id}>
-                <TableCell>{artist.id}</TableCell>
-                <TableCell>{artist.name}</TableCell>
-                <TableCell>{artist.genre}</TableCell>
-              </TableRow>
-            ))} */}
+            {artists?.data?.map((artist, index) => (
+              <ArtistRow artist={artist} index={index} key={artist?.id} />
+            ))}
           </TableBody>
         </Table>
       </CardContent>
     </Card>
-  )
+  );
 }
+
+// CREATE TABLE IF NOT EXISTS "Artist" (
+//   id SERIAL PRIMARY KEY,
+//   name VARCHAR(255) NOT NULL,
+//   dob TIMESTAMP NOT NULL,
+//   gender Gender,
+//   address VARCHAR(255) NOT NULL,
+//   first_release_year INT NOT NULL,
+//   no_of_albums_released INT,
+//   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+//   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+// );

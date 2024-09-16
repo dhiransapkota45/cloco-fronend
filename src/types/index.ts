@@ -45,3 +45,20 @@ export type AxiosResponse<T> = {
 export type LoginResponse = {
     accessToken: string
 }
+
+export type TArtistPayload = {
+    name: string
+    dob: string
+    gender: "m" | "f" | "o"
+    address: string
+    first_release_year: string
+    no_of_albums_released?:  string | undefined
+}
+
+export type TPartialArtistPayload = Partial<TArtistPayload>;
+
+export type TArtist = {
+    id: number
+    created_at: Date
+    updated_at: Date
+} & TArtistPayload;
