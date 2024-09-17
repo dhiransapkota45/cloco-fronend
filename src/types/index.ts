@@ -76,4 +76,5 @@ export type TMusic = {
     id: number
     created_at: Date
     updated_at: Date
+    artist_name: string
 } & TMusicPayload;

@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { QUERY_KEYS } from "@/data/constant";
-import { createMusic } from "@/service/api/music";
-import { TMusic } from "@/types";
+import { createMusic, updateMusic } from "@/service/api/music";
+import { TMusic, TMusicPayload } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -22,7 +22,7 @@ type props = {
 
 const AddMusic = ({ music, title, header }: props) => {
   const [openModal, setOpenModal] = useState(false);
-  const { musicFormInputs, musicFormSchema } = useMusicFrom();
+  const { musicFormInputs, musicFormSchema, isArtistLoading } = useMusicFrom();
   const form = useForm<z.infer<typeof musicFormSchema>>({
     resolver: zodResolver(musicFormSchema),
   });
@@ -34,22 +34,22 @@ const AddMusic = ({ music, title, header }: props) => {
     },
   });
 
-  //   const { mutate: mutateUpdateArtist } = useMutation(
-  //     ({ body, id }: { body: Partial<TArtistPayload>; id: number }) =>
-  //       updateArtist(body, id),
-  //     {
-  //       onSuccess: () => {
-  //         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ARTIST] });
-  //         setOpenModal(false);
-  //       },
-  //     }
-  //   );
-
-  useEffect(() => {
-    if (music) {
-      //   form.reset(music);
+  const { mutate: mutateUpdateMusic } = useMutation(
+    ({ body, id }: { body: Partial<TMusicPayload>; id: number }) =>
+      updateMusic(body, id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MUSIC] });
+        setOpenModal(false);
+      },
     }
-  }, [music]);
+  );
+  useEffect(() => {
+    if (music && !isArtistLoading) {
+      form.reset(music);
+      form.setValue("artist_id", music.artist_id.toString());
+    }
+  }, [music, isArtistLoading]);
 
   return (
     <Modal
@@ -61,11 +61,11 @@ const AddMusic = ({ music, title, header }: props) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => {
-            // if (artist) {
-            //   mutateUpdateArtist({ body: data, id: artist.id });
-            // } else {
-            mutateMusic({...data, artist_id: Number(data.artist_id)});
-            // }
+            if (music) {
+              mutateUpdateMusic({ body: data, id: music.id });
+            } else {
+              mutateMusic({ ...data, artist_id: Number(data.artist_id) });
+            }
           })}
         >
           {musicFormInputs.map((field) => (

@@ -37,7 +37,7 @@ const musicFormDetails: FieldDetails[] = [
 ];
 
 const useMusicFrom = () => {
-  const { data: artists } = useQuery({
+  const { data: artists, isLoading : isArtistLoading } = useQuery({
     queryKey: QUERY_KEYS.ARTIST,
     queryFn: fetchArtists,
   });
@@ -71,7 +71,7 @@ const useMusicFrom = () => {
       });
     }
   }, [artists]);
-  return { musicFormInputs, musicFormSchema };
+  return { musicFormInputs, musicFormSchema, isArtistLoading };
 };
 
 export default useMusicFrom;
