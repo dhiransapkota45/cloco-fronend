@@ -6,6 +6,7 @@ export type FieldDetails = {
   name: string;
   type: string;
   options?: { label: string; value: any }[];
+  disabled?: boolean;
 };
 
 export const userUpdateSchema = z.object({
@@ -19,13 +20,14 @@ export const userUpdateSchema = z.object({
   gender: z.enum(["m", "f", "o"]),
   address: z.string().min(1, "Address is required"),
   role: z.enum(["super_admin", "artist_manager", "artist"]),
-});
-
-export const userFormSchema = userUpdateSchema.extend({
   phone: z
     .string()
     .min(1, "Phone number is required")
     .regex(PHONE_REGEX, "Invalid phone number format"),
+});
+
+export const userFormSchema = userUpdateSchema.extend({
+  password: z.string().min(8, "Password should be minimum 8 characters"),
 });
 
 export const userFormDetails: FieldDetails[] = [

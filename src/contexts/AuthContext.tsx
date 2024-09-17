@@ -33,7 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const validateToken = async () => {
     try {
       const response = await tokenValidate()
-      console.log(response)
       setUser(response?.data?.user)
       setIsAuthenticated(true)
     } catch (error) {

@@ -1,4 +1,10 @@
-import { LoginFormData, LoginResponse, Response, TUser } from "@/types";
+import {
+  LoginFormData,
+  LoginResponse,
+  Response,
+  TUser,
+  TUserPayload,
+} from "@/types";
 import axiosInstance from "../axiosInstance";
 import { toast } from "@/hooks/use-toast";
 
@@ -20,14 +26,35 @@ export const login: (
   }
 };
 
-export const tokenValidate: () => Promise<Response<{user : TUser}> | null> =
-  async () => {
-    try {
-      const response = await axiosInstance.get<Response<{user : TUser}>>(
-        "/auth/validate-token"
-      );
-      return response.data;
-    } catch (error) {
-      return null;
-    }
-  };
+export const registerUser = async (body: TUserPayload) => {
+  const { data } = await axiosInstance.post<Response<TUser>>(
+    "/auth/register",
+    body
+  );
+  if (data?.success) {
+    toast({
+      title: "Success",
+      description: data?.message ?? "User created Successfully",
+    });
+    return data;
+  } else {
+    console.log("reach here");
+    toast({
+      title: "Success",
+      description: data?.message ?? "Unable to create user",
+    });
+  }
+};
+
+export const tokenValidate: () => Promise<Response<{
+  user: TUser;
+}> | null> = async () => {
+  try {
+    const response = await axiosInstance.get<Response<{ user: TUser }>>(
+      "/auth/validate-token"
+    );
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};

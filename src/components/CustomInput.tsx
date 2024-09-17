@@ -35,7 +35,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ fielddata, control }) => {
                 <FormLabel>{label}</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={fielddata?.disabled ?? false}>
                       <SelectValue placeholder="Select an option">
                         {options?.find((option) => option?.value === field.value)
                           ?.label || "Select an option"}
