@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from "@/components/ui/table";
-import { DAY_FORMAT } from "@/data/constant";
+import { DATE_FORMAT } from "@/data/constant";
 import { TUser } from "@/types";
 import dayjs from "dayjs";
 import EditUser from "./UpdateUser";
@@ -19,7 +19,7 @@ const UserRow = ({ user, index }: props) => {
       </TableCell>
       <TableCell>{user.email}</TableCell>
       <TableCell>{user.phone}</TableCell>
-      <TableCell>{dayjs(user.dob).format(DAY_FORMAT)}</TableCell>
+      <TableCell>{dayjs(user.dob).format(DATE_FORMAT)}</TableCell>
       <TableCell>{user.gender}</TableCell>
       <TableCell>{user.address}</TableCell>
       <TableCell>{user.role}</TableCell>

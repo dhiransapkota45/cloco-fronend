@@ -9,6 +9,7 @@ import { QUERY_KEYS } from "@/data/constant";
 import { createArtist, updateArtist } from "@/service/api/artist";
 import { TArtist, TArtistPayload } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -47,6 +48,7 @@ const AddArtist = ({ artist, title, header }: props) => {
   useEffect(() => {
     if (artist) {
       form.reset(artist);
+      form.setValue("dob", dayjs(artist.dob).format("YYYY-MM-DD"));
     }
   }, [artist]);
 

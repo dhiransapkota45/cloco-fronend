@@ -1,6 +1,6 @@
 export const EMAIL_REGEX = /\S+@\S+\.\S+/
 
-export const DAY_FORMAT = "DD/MM/YYYY"
+export const DATE_FORMAT = "YYYY-MM-DD"
 
 export const PHONE_REGEX = /^[0-9]{10,20}$/
 
@@ -9,3 +9,8 @@ export const QUERY_KEYS = {
     ARTIST : "artist",
     MUSIC : "music"
 }
+
+export const genderMap = new Map()
+genderMap.set("m", "Male")
+genderMap.set("f", "Female")
+genderMap.set("o", "Other")
