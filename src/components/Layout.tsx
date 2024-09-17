@@ -76,7 +76,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
-              <h1 className="text-lg font-semibold text-gray-900">Music App</h1>
+              <h1 className="text-lg font-semibold text-gray-900">Artist Management System</h1>
             </div>
             <div className="flex items-center">
               <span className="mr-4 text-sm text-gray-600 hidden sm:inline">

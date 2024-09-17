@@ -1,19 +1,8 @@
 import { useQuery } from 'react-query'
-import axios from 'axios'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
-interface Music {
-  id: number
-  title: string
-  artist: string
-  album: string
-}
-
-const fetchMusic = async () => {
-  const { data } = await axios.get<Music[]>('/api/music')
-  return data
-}
+import { fetchMusic } from '@/service/api/music'
+import AddMusic from './components/AddMusic'
 
 export default function MusicListingPage() {
   const { data: music, isLoading, error } = useQuery('music', fetchMusic)
@@ -23,28 +12,34 @@ export default function MusicListingPage() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className=' flex flex-row items-center justify-between'>
         <CardTitle>Music Listing</CardTitle>
+        <div>
+          <AddMusic header='Add Music' title='Add Music' />
+        </div>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead>S.No.</TableHead>
               <TableHead>Title</TableHead>
-              <TableHead>Artist</TableHead>
               <TableHead>Album</TableHead>
+              <TableHead>Genre</TableHead>
+              <TableHead>Artist</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* {music?.map((track) => (
+            {music?.data?.map((track, index) => (
               <TableRow key={track.id}>
-                <TableCell>{track.id}</TableCell>
+                <TableCell>{++index}</TableCell>
                 <TableCell>{track.title}</TableCell>
-                <TableCell>{track.artist}</TableCell>
-                <TableCell>{track.album}</TableCell>
+                <TableCell>{track.album_name}</TableCell>
+                <TableCell>{track.genre}</TableCell>
+                <TableCell>{track.artist_id}</TableCell>
+
               </TableRow>
-            ))} */}
+            ))}
           </TableBody>
         </Table>
       </CardContent>

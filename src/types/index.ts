@@ -62,3 +62,18 @@ export type TArtist = {
     created_at: Date
     updated_at: Date
 } & TArtistPayload;
+
+export type TMusicPayload = {
+    title: string
+    artist_id?: any
+    album_name: string
+    genre: string
+}
+
+export type TPartialMusicPayload = Partial<TMusicPayload>;
+
+export type TMusic = {
+    id: number
+    created_at: Date
+    updated_at: Date
+} & TMusicPayload;

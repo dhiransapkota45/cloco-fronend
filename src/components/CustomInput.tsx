@@ -3,15 +3,11 @@ import { Input } from "./ui/input";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Label } from "./ui/label";
 import { FieldDetails } from "@/data/user-form";
-import { Controller } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -19,17 +15,13 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { error } from "console";
 
 type CustomInputProps = {
   fielddata: FieldDetails;
   control: any;
 };
 
-const CustomInput: React.FC<CustomInputProps> = ({
-  fielddata,
-  control,
-}) => {
+const CustomInput: React.FC<CustomInputProps> = ({ fielddata, control }) => {
   const { label, name, type, options } = fielddata;
   return (
     <div>
@@ -41,10 +33,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
             return (
               <FormItem>
                 <FormLabel>{label}</FormLabel>
-                <Select onValueChange={field.onChange}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select an account type" />
+                      <SelectValue placeholder="Select an option">
+                        {options?.find((option) => option?.value === field.value)
+                          ?.label || "Select an option"}
+                      </SelectValue>
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -79,7 +74,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
           />
         </>
       )}
-
     </div>
   );
 };
