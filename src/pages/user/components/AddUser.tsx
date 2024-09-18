@@ -28,7 +28,6 @@ const AddUser = () => {
       title="Add User"
       closeModal={() => setOpenModal((prev) => !prev)}
       submitHandler={(data) => {
-        console.log("data", data)
         mutateCreateUser(data);
       }}
       form={form}

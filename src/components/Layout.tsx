@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { Menu, X } from 'lucide-react'
 
@@ -89,11 +88,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+        <main className="flex-1 flex overflow-x-hidden overflow-y-auto bg-gray-100">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <Card className="p-4 sm:p-6">
-              {children}
-            </Card>
+            {children}
           </div>
         </main>
       </div>

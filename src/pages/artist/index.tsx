@@ -7,17 +7,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { QUERY_KEYS } from "@/data/constant";
+import { LIMIT, QUERY_KEYS } from "@/data/constant";
 import { fetchArtists } from "@/service/api/artist";
 import AddArtist from "./components/AddArtist";
 import ArtistRow from "./components/ArtistRow";
+import { useState } from "react";
+import CustomPagination from "@/components/Pagination";
 
 export default function UserListingPage() {
+  const [offset, setOffset] = useState(0);
   const {
     data: artists,
     isLoading,
     error,
-  } = useQuery({ queryKey: QUERY_KEYS.ARTIST, queryFn: fetchArtists });
+  } = useQuery({ queryKey: QUERY_KEYS.ARTIST, queryFn: () => fetchArtists({ limit: LIMIT, offset: offset }) });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
@@ -30,7 +33,7 @@ export default function UserListingPage() {
           <AddArtist header="Create Artist" title="Create Artist" />
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1">
         <Table>
           <TableHeader>
             <TableRow>
@@ -45,24 +48,20 @@ export default function UserListingPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {artists?.data?.map((artist, index) => (
+            {artists?.data?.data?.map((artist, index) => (
               <ArtistRow artist={artist} index={index} key={artist?.id} />
             ))}
           </TableBody>
         </Table>
       </CardContent>
+      <CardContent>
+        <CustomPagination
+          totalItems={artists?.data?.total ?? 0}
+          itemsPerPage={LIMIT}
+          currentPage={offset / LIMIT + 1}
+          onPageChange={(page) => setOffset((page - 1) * LIMIT)}
+        />
+      </CardContent>
     </Card>
   );
 }
-
-// CREATE TABLE IF NOT EXISTS "Artist" (
-//   id SERIAL PRIMARY KEY,
-//   name VARCHAR(255) NOT NULL,
-//   dob TIMESTAMP NOT NULL,
-//   gender Gender,
-//   address VARCHAR(255) NOT NULL,
-//   first_release_year INT NOT NULL,
-//   no_of_albums_released INT,
-//   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// );

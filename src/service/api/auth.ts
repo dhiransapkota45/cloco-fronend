@@ -38,7 +38,6 @@ export const registerUser = async (body: TUserPayload) => {
     });
     return data;
   } else {
-    console.log("reach here");
     toast({
       title: "Success",
       description: data?.message ?? "Unable to create user",

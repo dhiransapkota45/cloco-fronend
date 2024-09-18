@@ -14,3 +14,6 @@ export const genderMap = new Map()
 genderMap.set("m", "Male")
 genderMap.set("f", "Female")
 genderMap.set("o", "Other")
+
+
+export const LIMIT = 5

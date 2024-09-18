@@ -1,14 +1,21 @@
-import { Response, TUser, TUserPayload } from "@/types";
+import {
+  ListResponse,
+  Pagination,
+  Response,
+  TUser,
+  TUserPayload,
+} from "@/types";
 import axiosInstance from "../axiosInstance";
 import { toast } from "@/hooks/use-toast";
 
-export const fetchUsers = async () => {
-  const { data } = await axiosInstance.get<Response<TUser[]>>("/user");
+export const fetchUsers = async ({ limit = 10, offset }: Pagination) => {
+  const { data } = await axiosInstance.get<Response<ListResponse<TUser>>>(
+    `/user?limit=${limit}&offset=${offset}`
+  );
   return data;
 };
 
 export const createUser = async (body: TUserPayload) => {
-  console.log(body)
   try {
     const { data } = await axiosInstance.post<Response<TUser>>(
       "/user/create",
@@ -60,10 +67,11 @@ export const updateUser = async (body: Partial<TUserPayload>, id: number) => {
   }
 };
 
-
 export const deleteUser = async (id: number) => {
   try {
-    const { data } = await axiosInstance.delete<Response<TUser>>(`/user/delete/${id}`);
+    const { data } = await axiosInstance.delete<Response<TUser>>(
+      `/user/delete/${id}`
+    );
     if (data?.success) {
       toast({
         title: "Success",
@@ -82,4 +90,4 @@ export const deleteUser = async (id: number) => {
       description: "Unable to delete user",
     });
   }
-}
+};

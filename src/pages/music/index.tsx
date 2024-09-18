@@ -10,16 +10,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fetchMusic } from "@/service/api/music";
 import AddMusic from "./components/AddMusic";
 import MusicRow from "./components/MusicRow";
-import { QUERY_KEYS } from "@/data/constant";
+import { LIMIT, QUERY_KEYS } from "@/data/constant";
+import CustomPagination from "@/components/Pagination";
+import { useState } from "react";
 
 export default function MusicListingPage() {
+  const [offset, setOffset] = useState(0);
+
   const {
     data: music,
     isLoading,
     error,
   } = useQuery({
     queryKey: [QUERY_KEYS.MUSIC],
-    queryFn: fetchMusic,
+    queryFn: ()=>fetchMusic({limit: LIMIT, offset: offset}),
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -46,11 +50,19 @@ export default function MusicListingPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {music?.data?.map((track, index) => (
+            {music?.data?.data?.map((track, index) => (
               <MusicRow key={track.id} index={index} track={track} />
             ))}
           </TableBody>
         </Table>
+      </CardContent>
+      <CardContent>
+        <CustomPagination
+          totalItems={music?.data?.total ?? 0}
+          itemsPerPage={LIMIT}
+          currentPage={offset / LIMIT + 1}
+          onPageChange={(page) => setOffset((page - 1) * LIMIT)}
+        />
       </CardContent>
     </Card>
   );

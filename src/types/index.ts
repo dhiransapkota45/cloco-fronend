@@ -78,3 +78,15 @@ export type TMusic = {
     updated_at: Date
     artist_name: string
 } & TMusicPayload;
+
+
+export type ListResponse<T> = {
+    data: T[];
+    total: number;
+    isNext: boolean;
+}
+
+export type Pagination = {
+    offset: number
+    limit: number
+}

@@ -1,9 +1,11 @@
-import { Response, TMusic, TMusicPayload } from "@/types";
+import { ListResponse, Pagination, Response, TMusic, TMusicPayload } from "@/types";
 import axiosInstance from "../axiosInstance";
 import { toast } from "@/hooks/use-toast";
 
-export const fetchMusic = async () => {
-  const { data } = await axiosInstance.get<Response<TMusic[]>>("/music");
+export const fetchMusic = async ({limit, offset} : Pagination) => {
+  const { data } = await axiosInstance.get<Response<ListResponse<TMusic>>>(
+    `/music?limit=${limit}&offset=${offset}`
+  );
   return data;
 };
 
@@ -59,10 +61,11 @@ export const updateMusic = async (body: Partial<TMusicPayload>, id: number) => {
   }
 };
 
-
 export const deleteMusic = async (id: number) => {
   try {
-    const { data } = await axiosInstance.delete<Response<TMusic>>(`/music/delete/${id}`);
+    const { data } = await axiosInstance.delete<Response<TMusic>>(
+      `/music/delete/${id}`
+    );
     if (data?.success) {
       toast({
         title: "Success",
@@ -81,4 +84,4 @@ export const deleteMusic = async (id: number) => {
       description: "Unable to delete music",
     });
   }
-}
+};

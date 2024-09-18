@@ -37,9 +37,9 @@ const musicFormDetails: FieldDetails[] = [
 ];
 
 const useMusicFrom = () => {
-  const { data: artists, isLoading : isArtistLoading } = useQuery({
+  const { data: artists, isLoading: isArtistLoading } = useQuery({
     queryKey: QUERY_KEYS.ARTIST,
-    queryFn: fetchArtists,
+    queryFn: () => fetchArtists({ limit: 1000, offset: 0 }),
   });
 
   const musicFormSchema = z.object({
@@ -54,7 +54,7 @@ const useMusicFrom = () => {
   const [musicFormInputs, setMusicFormInputs] = useState(musicFormDetails);
   useEffect(() => {
     if (artists) {
-      const artistOptions = artists?.data?.map((artist) => ({
+      const artistOptions = artists?.data?.data.map((artist) => ({
         label: artist.name,
         value: artist.id.toString(),
       }));
