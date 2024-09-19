@@ -27,14 +27,14 @@ const AddArtist = ({ artist, title, header }: props) => {
     resolver: zodResolver(artistFormSchema),
   });
 
-  const { mutate: mutateCreateArtist } = useMutation(createArtist, {
+  const { mutate: mutateCreateArtist, isLoading } = useMutation(createArtist, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ARTIST] });
       setOpenModal(false);
     },
   });
 
-  const { mutate: mutateUpdateArtist } = useMutation(
+  const { mutate: mutateUpdateArtist, isLoading : isUpdateLoading } = useMutation(
     ({ body, id }: { body: Partial<TArtistPayload>; id: number }) =>
       updateArtist(body, id),
     {
@@ -54,6 +54,7 @@ const AddArtist = ({ artist, title, header }: props) => {
 
   return (
     <Modal
+      isLoading={isLoading || isUpdateLoading}
       closeModal={() => setOpenModal((prev) => !prev)}
       open={openModal}
       header={header}

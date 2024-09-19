@@ -4,6 +4,8 @@ import { TArtist } from "@/types";
 import dayjs from "dayjs";
 import AddArtist from "./AddArtist";
 import DeleteArtist from "./DeleteArtist";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 type props = {
   artist: TArtist;
@@ -12,9 +14,14 @@ type props = {
 };
 
 const ArtistRow = ({ artist, index, offset }: props) => {
+  const { user } = useAuth();
   return (
     <TableRow>
-      <TableCell>{offset + (++index)}</TableCell>
+      <TableCell>
+        <NavLink className="underline" to={`/artists/${artist?.id}`}>
+          {offset + (++index)}
+        </NavLink>
+      </TableCell>
       <TableCell>{artist.name}</TableCell>
       <TableCell>{artist.address}</TableCell>
       <TableCell>{genderMap.get(artist.gender ?? "m")}</TableCell>
@@ -22,13 +29,14 @@ const ArtistRow = ({ artist, index, offset }: props) => {
       <TableCell>{artist.first_release_year}</TableCell>
       <TableCell>{artist.address}</TableCell>
       <TableCell className=" flex gap-1">
-        <AddArtist
+        {user?.role === "artist_manager" && <><AddArtist
           artist={artist}
           key={"Edit"}
           header="Edit Artist"
           title="Edit Artist"
         />
-        <DeleteArtist artist={artist} />
+          <DeleteArtist artist={artist} />
+        </>}
       </TableCell>
     </TableRow>
   );

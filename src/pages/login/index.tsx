@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoginFormData } from "@/types";
 import { EMAIL_REGEX } from "@/data/constant";
 import { useAuth } from "@/contexts/AuthContext";
+import { NavLink } from "react-router-dom";
 
 export default function LoginPage() {
   const {
@@ -62,6 +63,9 @@ export default function LoginPage() {
             <Button type="submit" className="w-full">
               Login
             </Button>
+            <NavLink to="/register" className=" text-sm underline">
+              Don't have an account? Register
+            </NavLink>
           </form>
         </CardContent>
       </Card>

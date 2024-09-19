@@ -11,15 +11,16 @@ type props = {
   title: string;
   header: string;
   children: React.ReactNode;
-  open : boolean;
-  closeModal : () => void
+  open: boolean;
+  closeModal: () => void
+  isLoading?: boolean;
 };
 
-export function Modal({ children, header, title, open, closeModal }: props) {
+export function Modal({ children, header, title, open, closeModal, isLoading }: props) {
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogTrigger asChild>
-        <Button variant="outline">{header}</Button>
+        <Button variant="outline">{isLoading && <span className=" spinner"></span>} {header}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -7,6 +7,7 @@ import ArtistRow from "./components/ArtistRow";
 import { useState } from "react";
 import CustomPagination from "@/components/Pagination";
 import TableWrapper from "@/components/TableWrapper";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UserListingPage() {
   const [offset, setOffset] = useState(0);
@@ -16,6 +17,8 @@ export default function UserListingPage() {
     error,
   } = useQuery({ queryKey: QUERY_KEYS.ARTIST, queryFn: () => fetchArtists({ limit: LIMIT, offset: offset }) });
 
+  const { user } = useAuth();
+
   if (error) return <div>An error has occurred</div>;
 
   const tableHeaders = ["S.No", "Name", "Date of birth", "Gender", "Address", "First Release Year", "Number of Albums Released", "Actions"];
@@ -24,7 +27,7 @@ export default function UserListingPage() {
       <CardHeader className=" flex flex-row items-center justify-between">
         <CardTitle>Artists</CardTitle>
         <div>
-          <AddArtist header="Create Artist" title="Create Artist" />
+          {user?.role === "artist_manager" && <AddArtist header="Create Artist" title="Create Artist" />}
         </div>
       </CardHeader>
       <CardContent className="flex-1">

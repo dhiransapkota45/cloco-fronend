@@ -2,11 +2,20 @@ import { ListResponse, Pagination, Response, TMusic, TMusicPayload } from "@/typ
 import axiosInstance from "../axiosInstance";
 import { toast } from "@/hooks/use-toast";
 
-export const fetchMusic = async ({limit, offset} : Pagination) => {
-  const { data } = await axiosInstance.get<Response<ListResponse<TMusic>>>(
-    `/music?limit=${limit}&offset=${offset}`
-  );
-  return data;
+export const fetchMusic = async ({limit, offset, artist_id} : Pagination & {artist_id? : number}) => {
+  if(artist_id){
+    const { data } = await axiosInstance.get<Response<ListResponse<TMusic>>>(
+      `/music/artist/${artist_id}?limit=${limit}&offset=${offset}`
+    );
+    return data;
+  }else{
+    const { data } = await axiosInstance.get<Response<ListResponse<TMusic>>>(
+      `/music?limit=${limit}&offset=${offset}`
+    );
+    return data;
+  }
+
+
 };
 
 export const createMusic = async (body: TMusicPayload) => {

@@ -5,26 +5,18 @@ export const routes = {
             label: "Users"
         },
         {
-            path: "/music",
-            label: "Music"
-        },
-        {
             path: "/artists",
             label: "Artists"
-        }
+        },
     ],
     artist_manager: [
         {
             path: "/artists",
             label: "Artists"
-        },
-        {
-            path: "/music",
-            label: "Music"
         }
     ],
 
-    user: [
+    artist: [
         {
             path: "/music",
             label: "Music"
