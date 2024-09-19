@@ -1,11 +1,4 @@
 import { useQuery } from "react-query";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fetchMusic } from "@/service/api/music";
 import AddMusic from "./components/AddMusic";
@@ -13,6 +6,7 @@ import MusicRow from "./components/MusicRow";
 import { LIMIT, QUERY_KEYS } from "@/data/constant";
 import CustomPagination from "@/components/Pagination";
 import { useState } from "react";
+import TableWrapper from "@/components/TableWrapper";
 
 export default function MusicListingPage() {
   const [offset, setOffset] = useState(0);
@@ -26,35 +20,22 @@ export default function MusicListingPage() {
     queryFn: () => fetchMusic({ limit: LIMIT, offset: offset }),
   });
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
 
   return (
-    <Card>
+    <Card className="h-full flex flex-col ">
       <CardHeader className=" flex flex-row items-center justify-between">
-        <CardTitle>Music Listing</CardTitle>
+        <CardTitle>Music</CardTitle>
         <div>
           <AddMusic header="Add Music" title="Add Music" />
         </div>
       </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>S.No.</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Album</TableHead>
-              <TableHead>Genre</TableHead>
-              <TableHead>Artist</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {music?.data?.data?.map((track, index) => (
-              <MusicRow offset={offset} key={track.id} index={index} track={track} />
-            ))}
-          </TableBody>
-        </Table>
+      <CardContent className=" flex-1">
+        <TableWrapper headers={["S.No", "Title", "Album", "Genre", "Artist", "Action"]} isLoading={isLoading} length={music?.data?.data.length ?? 0}>
+          {music?.data?.data?.map((track, index) => (
+            <MusicRow offset={offset} key={track.id} index={index} track={track} />
+          ))}
+        </TableWrapper>
       </CardContent>
       <CardContent>
         <CustomPagination

@@ -1,11 +1,4 @@
 import { useQuery } from "react-query";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fetchUsers } from "@/service/api/user";
 import UserRow from "./components/UserRow";
@@ -13,7 +6,7 @@ import AddUser from "./components/AddUser";
 import { LIMIT, QUERY_KEYS } from "@/data/constant";
 import CustomPagination from "@/components/Pagination";
 import { useState } from "react";
-import TableSkeleton from "@/components/TableSkeleton";
+import TableWrapper from "@/components/TableWrapper";
 
 export default function UserListingPage() {
   const [offset, setOffset] = useState(0);
@@ -26,6 +19,7 @@ export default function UserListingPage() {
     queryFn: () => fetchUsers({ limit: LIMIT, offset: offset }),
   });
 
+  const headers = ["S.No", "Name", "Email", "Phone", "Date of Birth", "Gender", "Address", "Role", "Actions"];
   if (error) return <div>An error has occurred</div>;
 
   return (
@@ -37,31 +31,13 @@ export default function UserListingPage() {
         </div>
       </CardHeader>
       <CardContent className=" flex-1">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>S.No.</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>DOB</TableHead>
-              <TableHead>Gender</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {
-              isLoading ? (
-                <TableSkeleton headerCount={7} />
-              ) : users?.data?.data.length === 0 ? "No data found" : users?.data?.data?.map((user, index) => (
-                <UserRow offset={offset} user={user} index={index} key={user?.id} />
-              ))
-            }
-
-          </TableBody>
-        </Table>
+        <TableWrapper headers={headers} isLoading={isLoading} length={users?.data?.data.length ?? 0}>
+          {
+            users?.data?.data?.map((user, index) => (
+              <UserRow offset={offset} user={user} index={index} key={user?.id} />
+            ))
+          }
+        </TableWrapper>
       </CardContent>
       <CardContent>
         <CustomPagination
