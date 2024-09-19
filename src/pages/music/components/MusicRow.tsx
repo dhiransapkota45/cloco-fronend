@@ -5,11 +5,12 @@ import DeleteMusic from "./DeleteMusic";
 type props = {
   track: TMusic;
   index: number;
+  offset: number;
 };
-const MusicRow = ({ index, track }: props) => {
+const MusicRow = ({ index, track, offset }: props) => {
   return (
     <TableRow>
-      <TableCell>{++index}</TableCell>
+      <TableCell>{offset + (++index)}</TableCell>
       <TableCell>{track.title}</TableCell>
       <TableCell>{track.album_name}</TableCell>
       <TableCell>{track.genre}</TableCell>

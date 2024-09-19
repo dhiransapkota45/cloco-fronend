@@ -8,12 +8,13 @@ import DeleteUser from "./DeleteUser";
 type props = {
   user: TUser;
   index : number
+  offset: number;
 };
 
-const UserRow = ({ user, index }: props) => {
+const UserRow = ({ user, index, offset }: props) => {
   return (
     <TableRow>
-      <TableCell>{++index}</TableCell>
+      <TableCell>{offset + (++index)}</TableCell>
       <TableCell>
         {user.first_name} {user.last_name}
       </TableCell>

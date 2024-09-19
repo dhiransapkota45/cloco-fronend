@@ -23,7 +23,7 @@ export default function MusicListingPage() {
     error,
   } = useQuery({
     queryKey: [QUERY_KEYS.MUSIC],
-    queryFn: ()=>fetchMusic({limit: LIMIT, offset: offset}),
+    queryFn: () => fetchMusic({ limit: LIMIT, offset: offset }),
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -51,7 +51,7 @@ export default function MusicListingPage() {
           </TableHeader>
           <TableBody>
             {music?.data?.data?.map((track, index) => (
-              <MusicRow key={track.id} index={index} track={track} />
+              <MusicRow offset={offset} key={track.id} index={index} track={track} />
             ))}
           </TableBody>
         </Table>

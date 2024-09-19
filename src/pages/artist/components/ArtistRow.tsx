@@ -8,12 +8,13 @@ import DeleteArtist from "./DeleteArtist";
 type props = {
   artist: TArtist;
   index: number;
+  offset: number;
 };
 
-const ArtistRow = ({ artist, index }: props) => {
+const ArtistRow = ({ artist, index, offset }: props) => {
   return (
     <TableRow>
-      <TableCell>{++index}</TableCell>
+      <TableCell>{offset + (++index)}</TableCell>
       <TableCell>{artist.name}</TableCell>
       <TableCell>{artist.address}</TableCell>
       <TableCell>{genderMap.get(artist.gender ?? "m")}</TableCell>

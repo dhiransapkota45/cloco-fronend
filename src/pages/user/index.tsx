@@ -13,6 +13,7 @@ import AddUser from "./components/AddUser";
 import { LIMIT, QUERY_KEYS } from "@/data/constant";
 import CustomPagination from "@/components/Pagination";
 import { useState } from "react";
+import TableSkeleton from "@/components/TableSkeleton";
 
 export default function UserListingPage() {
   const [offset, setOffset] = useState(0);
@@ -25,7 +26,6 @@ export default function UserListingPage() {
     queryFn: () => fetchUsers({ limit: LIMIT, offset: offset }),
   });
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
 
   return (
@@ -52,9 +52,14 @@ export default function UserListingPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users?.data?.data?.map((user, index) => (
-              <UserRow user={user} index={index} key={user?.id} />
-            ))}
+            {
+              isLoading ? (
+                <TableSkeleton headerCount={7} />
+              ) : users?.data?.data.length === 0 ? "No data found" : users?.data?.data?.map((user, index) => (
+                <UserRow offset={offset} user={user} index={index} key={user?.id} />
+              ))
+            }
+
           </TableBody>
         </Table>
       </CardContent>

@@ -49,7 +49,7 @@ export default function UserListingPage() {
           </TableHeader>
           <TableBody>
             {artists?.data?.data?.map((artist, index) => (
-              <ArtistRow artist={artist} index={index} key={artist?.id} />
+              <ArtistRow offset={offset} artist={artist} index={index} key={artist?.id} />
             ))}
           </TableBody>
         </Table>
