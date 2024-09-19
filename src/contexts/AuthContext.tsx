@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import axios from 'axios'
+import axios, { all } from 'axios'
 import { LoginFormData } from '@/types'
 import { login as loginApi, tokenValidate } from '@/service/api/auth'
 import Cookies from 'js-cookie'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface AuthContextType {
   user: any
@@ -14,6 +14,8 @@ interface AuthContextType {
   isLoading : boolean
 }
 
+const allProtechedRoutes = ["users", "music", "artists", ""]
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -21,11 +23,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate();
+  const location = useLocation();
 
 
   useEffect(() => {
     const token = Cookies.get('authorization')
-    if (token) {
+    if (token && allProtechedRoutes.includes(location.pathname.split('/')[1])) {
       validateToken()
     }
   }, [])
@@ -47,13 +50,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if(response?.success){
       Cookies.set("authorization", response?.data?.accessToken ?? "");
       setIsAuthenticated(true);
-      navigate("/");
+      // navigate("/");
+      window.location.href = "/";
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+    Cookies.remove('authorization')
     setUser(null)
     setIsAuthenticated(false)
   }
