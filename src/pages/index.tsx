@@ -1,32 +1,30 @@
 import { useAuth } from "@/contexts/AuthContext"
+import { routes } from "@/data/routes"
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Homepage = () => {
     const navigate = useNavigate()
-    const { isLoading, isAuthenticated, user } = useAuth()
+    const { isLoading, user } = useAuth()
+    const allowedRoutes = routes[user?.role as keyof typeof routes].map((route) => route.path)
 
-    console.log(user)
+    useEffect(() => {
+        if (user?.role === "super_admin") {
+            navigate(allowedRoutes[0])
+        }
+
+        if (user?.role === "artist_manager") {
+            console.log("does it reach here", allowedRoutes[0])
+            navigate(allowedRoutes[0])
+        }
+
+        if (user?.role === "artist") {
+            navigate(allowedRoutes[0])
+        }
+    }, [user])
+
     if (isLoading) {
         return null
-    }
-
-    if (!isAuthenticated) {
-        navigate("/login")
-        return null
-    }
-
-    if (user.role === "super_admin") {
-        navigate("/users")
-        return null
-    }
-
-    if (user.role === "artist_manager") {
-        navigate("/artists")
-        return null
-    }
-
-    if (user.role === "user") {
-        navigate("/music")
     }
 
     return null

@@ -5,19 +5,14 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './Theme'
-
-const sidebarItems = [
-  { path: '/users', label: 'Users' },
-  { path: '/music', label: 'Music' },
-  { path: '/artists', label: 'Artists' },
-]
+import { routes } from '@/data/routes'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { user, logout } = useAuth()
+  const { user, logout, isLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
+  const userRole = user?.role ?? 'artist'
   const handleLogout = () => {
     logout()
     navigate('/login')
@@ -26,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const NavLinks = () => (
     <nav className="mt-5">
       <ul>
-        {sidebarItems.map((item) => (
+        {routes[userRole as keyof typeof routes].map((item) => (
           <li key={item.path} className="mb-2">
             <Link
               to={item.path}
@@ -46,6 +41,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </nav>
   )
 
+  if (isLoading) {
+    return null
+  }
+
   return (
     <div className=''>
       <div className="flex h-screen">
@@ -58,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           isMobileMenuOpen ? "block" : "hidden"
         )} onClick={() => setIsMobileMenuOpen(false)} />
         <aside className={cn(
-          "fixed top-0 left-0 w-64 h-full bg-white shadow-md z-50 transform transition-transform duration-200 ease-in-out md:hidden",
+          "fixed top-0 left-0 w-64 h-full bg-white dark:bg-black shadow-md z-50 transform transition-transform duration-200 ease-in-out md:hidden",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         )}>
           <div className="p-4 flex justify-end">

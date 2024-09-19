@@ -44,6 +44,7 @@ export type AxiosResponse<T> = {
 
 export type LoginResponse = {
     accessToken: string
+    user: TUser
 }
 
 export type TArtistPayload = {

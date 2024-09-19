@@ -1,14 +1,10 @@
 import { useAuth } from "@/contexts/AuthContext"
+import { routes } from "@/data/routes"
+import { useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 const isRouteAllowed = (route: string, allowedRoles: string[]) => {
     return allowedRoles.includes(route)
-}
-
-const routesMapper = {
-    super_admin: ["/users", "/music", "/artists"],
-    artist_manager: ["/artists", "/music"],
-    user: ["/music"]
 }
 
 const AuthorizeRoute = ({ children }: { children: React.ReactNode }) => {
@@ -18,18 +14,20 @@ const AuthorizeRoute = ({ children }: { children: React.ReactNode }) => {
     if (isLoading) {
         return null
     }
-    if (!user) {
-        navigate("/login")
-        return null
-    }
-    const allowedRoutes = routesMapper[user.role as keyof typeof routesMapper]
-    if (!isRouteAllowed(location.pathname, allowedRoutes)) {
-        if (isAuthenticated) {
-            navigate(allowedRoutes[0])
-        } else {
-            navigate("/login")
+
+    useEffect(() => {
+        if (user) {
+            const allowedRoutes = routes[user.role as keyof typeof routes].map((route) => route.path)
+            if (!isRouteAllowed(location.pathname, allowedRoutes)) {
+                if (isAuthenticated) {
+                    navigate(allowedRoutes[0])
+                } else {
+                    navigate("/login")
+                }
+            }
         }
-    }
+
+    }, [user])
 
     return <>{children}</>
 

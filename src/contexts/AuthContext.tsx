@@ -1,17 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios, { all } from 'axios'
-import { LoginFormData } from '@/types'
+import { LoginFormData, TUser } from '@/types'
 import { login as loginApi, tokenValidate } from '@/service/api/auth'
 import Cookies from 'js-cookie'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { routes } from '@/data/routes'
 
 interface AuthContextType {
-  user: any
-  login: (data : LoginFormData) => Promise<void>
+  user: TUser | null
+  login: (data: LoginFormData) => Promise<void>
   logout: () => void
   register: (email: string, password: string) => Promise<void>
   isAuthenticated: boolean,
-  isLoading : boolean
+  isLoading: boolean
 }
 
 const allProtechedRoutes = ["users", "music", "artists", ""]
@@ -30,6 +31,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = Cookies.get('authorization')
     if (token && allProtechedRoutes.includes(location.pathname.split('/')[1])) {
       validateToken()
+    } else {
+      setIsLoading(false)
+      navigate("/login")
     }
   }, [])
 
@@ -40,18 +44,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAuthenticated(true)
     } catch (error) {
       logout()
-    } finally{
+    } finally {
       setIsLoading(false)
     }
   }
 
   const login = async (data: LoginFormData) => {
     const response = await loginApi(data);
-    if(response?.success){
+    if (response?.success) {
       Cookies.set("authorization", response?.data?.accessToken ?? "");
       setIsAuthenticated(true);
-      // navigate("/");
-      window.location.href = "/";
+      const allowedRoutes = routes[response?.data?.user.role as keyof typeof routes].map((route) => route.path)
+      window.location.href = allowedRoutes[0];
+      // navigate(allowedRoutes[0]);
     }
   };
 
