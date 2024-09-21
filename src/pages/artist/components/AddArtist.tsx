@@ -24,9 +24,8 @@ type props = {
 const AddArtist = ({ artist, title, header }: props) => {
   const [openModal, setOpenModal] = useState(false);
   const form = useForm<z.infer<typeof artistFormSchema>>({
-    resolver: zodResolver(artistFormSchema),
+    resolver: zodResolver(artist ? artistFormSchema.omit({ password: true }) : artistFormSchema),
   });
-
   const { mutate: mutateCreateArtist, isLoading } = useMutation(createArtist, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ARTIST] });
@@ -34,7 +33,7 @@ const AddArtist = ({ artist, title, header }: props) => {
     },
   });
 
-  const { mutate: mutateUpdateArtist, isLoading : isUpdateLoading } = useMutation(
+  const { mutate: mutateUpdateArtist, isLoading: isUpdateLoading } = useMutation(
     ({ body, id }: { body: Partial<TArtistPayload>; id: number }) =>
       updateArtist(body, id),
     {
@@ -47,7 +46,11 @@ const AddArtist = ({ artist, title, header }: props) => {
 
   useEffect(() => {
     if (artist) {
-      form.reset(artist);
+      form.reset({
+        ...artist,
+        first_release_year: parseInt(artist.first_release_year, 10),
+        no_of_albums_released: parseInt(artist.no_of_albums_released ?? "0", 10),
+      });
       form.setValue("dob", dayjs(artist.dob).format("YYYY-MM-DD"));
     }
   }, [artist]);
@@ -64,7 +67,15 @@ const AddArtist = ({ artist, title, header }: props) => {
         <form
           onSubmit={form.handleSubmit((data) => {
             if (artist) {
-              mutateUpdateArtist({ body: data, id: artist.id });
+              mutateUpdateArtist({
+                body: {
+                  ...data,
+                  first_release_year: data.first_release_year.toString(),
+                  no_of_albums_released: data.no_of_albums_released?.toString(),
+                  user_id: artist?.user_id,
+                },
+                id: artist.id
+              });
             } else {
               mutateCreateArtist({
                 ...data,
@@ -74,7 +85,7 @@ const AddArtist = ({ artist, title, header }: props) => {
             }
           })}
         >
-          {artistFormDetails.map((field) => (
+          {artistFormDetails.filter(formitem => !artist ? true : formitem.name !== "password").map((field) => (
             <CustomInput
               control={form.control}
               key={field.name}

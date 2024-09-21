@@ -21,7 +21,7 @@ export default function UserListingPage() {
 
   if (error) return <div>An error has occurred</div>;
 
-  const tableHeaders = ["S.No", "Name", "Date of birth", "Gender", "Address", "First Release Year", "Number of Albums Released", "Actions"];
+  const tableHeaders = ["S.No", "Name", "Email", "Date of birth", "Gender", "Address", "First Release Year", "Number of Albums Released", "Actions"];
   return (
     <Card className="h-full flex flex-col ">
       <CardHeader className=" flex flex-row items-center justify-between">

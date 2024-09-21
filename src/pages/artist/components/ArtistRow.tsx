@@ -18,25 +18,32 @@ const ArtistRow = ({ artist, index, offset }: props) => {
   return (
     <TableRow>
       <TableCell>
-        <NavLink className="underline" to={`/artists/${artist?.id}`}>
+        <NavLink className="underline" to={`/artists/${artist?.user_id}`}>
           {offset + (++index)}
         </NavLink>
       </TableCell>
-      <TableCell>{artist.name}</TableCell>
-      <TableCell>{artist.address}</TableCell>
-      <TableCell>{genderMap.get(artist.gender ?? "m")}</TableCell>
+      <TableCell>{artist.first_name} {artist.last_name}</TableCell>
+      <TableCell>{artist.email}</TableCell>
+
       <TableCell>{dayjs(artist.dob).format(DATE_FORMAT)}</TableCell>
-      <TableCell>{artist.first_release_year}</TableCell>
+      <TableCell>{genderMap.get(artist.gender ?? "m")}</TableCell>
       <TableCell>{artist.address}</TableCell>
+      <TableCell>{artist.first_release_year}</TableCell>
+      <TableCell>{artist.no_of_albums_released}</TableCell>
       <TableCell className=" flex gap-1">
-        {user?.role === "artist_manager" && <><AddArtist
-          artist={artist}
-          key={"Edit"}
-          header="Edit Artist"
-          title="Edit Artist"
-        />
-          <DeleteArtist artist={artist} />
-        </>}
+        {user?.role === "artist_manager" ?
+          <>
+            <AddArtist
+              artist={artist}
+              key={"Edit"}
+              header="Edit Artist"
+              title="Edit Artist"
+            />
+            <DeleteArtist artist={artist} />
+          </>
+          :
+          "Not Authorized"
+        }
       </TableCell>
     </TableRow>
   );
