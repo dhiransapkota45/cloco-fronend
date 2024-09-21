@@ -1,5 +1,6 @@
 import CustomInput from "@/components/CustomInput";
 import { Modal } from "@/components/Modal";
+import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
@@ -13,6 +14,7 @@ type props = {
   form: any;
   open: boolean;
   userFormDetails: FieldDetails[];
+  isLoading?: boolean;
 };
 
 const MutateUser = ({
@@ -23,6 +25,7 @@ const MutateUser = ({
   form,
   open,
   userFormDetails,
+  isLoading
 }: props) => {
   return (
     <Modal closeModal={closeModal} open={open} header={header} title={title}>
@@ -36,7 +39,9 @@ const MutateUser = ({
             />
           ))}
           <DialogFooter className=" mt-4">
-            <Button type="submit">Save</Button>
+            <Button disabled={isLoading} type="submit">
+              {isLoading && <Spinner />}Save
+            </Button>
           </DialogFooter>
         </form>
       </Form>

@@ -24,6 +24,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response?.status === 401 && !originalRequest._retry) {
        Cookies.remove("authorization");
+       localStorage.clear();
        location.href = "/login";
     }
     return Promise.reject(error);

@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from "@/components/ui/table";
-import { DATE_FORMAT } from "@/data/constant";
+import { DATE_FORMAT, genderMap, roleMap } from "@/data/constant";
 import { TUser } from "@/types";
 import dayjs from "dayjs";
 import EditUser from "./UpdateUser";
@@ -21,9 +21,9 @@ const UserRow = ({ user, index, offset }: props) => {
       <TableCell>{user.email}</TableCell>
       <TableCell>{user.phone}</TableCell>
       <TableCell>{dayjs(user.dob).format(DATE_FORMAT)}</TableCell>
-      <TableCell>{user.gender}</TableCell>
+      <TableCell>{genderMap.get(user.gender)}</TableCell>
       <TableCell>{user.address}</TableCell>
-      <TableCell>{user.role}</TableCell>
+      <TableCell>{roleMap.get(user.role)}</TableCell>
       <TableCell className=" flex gap-1">
         <EditUser
           userData={user}

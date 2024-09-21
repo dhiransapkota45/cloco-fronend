@@ -16,7 +16,6 @@ export const fetchArtists = async ({ limit, offset }: Pagination) => {
 };
 
 export const createArtist = async (body: TArtistPayload) => {
-  try {
     const { data } = await axiosInstance.post<Response<TArtist>>(
       "/artist/create",
       body
@@ -33,64 +32,44 @@ export const createArtist = async (body: TArtistPayload) => {
         description: data?.message ?? "Unable to create artist",
       });
     }
-  } catch (error) {
-    toast({
-      title: "error",
-      description: "Unable to create artist",
-    });
-  }
 };
 
 export const updateArtist = async (
-  body: Partial<TArtistPayload> ,
+  body: Partial<TArtistPayload>,
   id: number
 ) => {
-  try {
-    const { data } = await axiosInstance.patch<Response<TArtist>>(
-      `/artist/update/${id}`,
-      body
-    );
-    if (data?.success) {
-      toast({
-        title: "Success",
-        description: data?.message ?? "Artist updated Successfully",
-      });
-      return data;
-    } else {
-      toast({
-        title: "Success",
-        description: data?.message ?? "Unable to update artist",
-      });
-    }
-  } catch (error) {
+  const { data } = await axiosInstance.patch<Response<TArtist>>(
+    `/artist/update/${id}`,
+    body
+  );
+  if (data?.success) {
     toast({
-      title: "error",
-      description: "Unable to update artist",
+      title: "Success",
+      description: data?.message ?? "Artist updated Successfully",
+    });
+    return data;
+  } else {
+    toast({
+      title: "Success",
+      description: data?.message ?? "Unable to update artist",
     });
   }
 };
 
 export const deleteArtist = async (id: number) => {
-  try {
-    const { data } = await axiosInstance.delete<Response<TArtist>>(
-      `/artist/delete/${id}`
-    );
-    if (data?.success) {
-      toast({
-        title: "Success",
-        description: data?.message ?? "Artist deleted Successfully",
-      });
-      return data;
-    } else {
-      toast({
-        title: "Success",
-        description: data?.message ?? "Unable to delete artist",
-      });
-    }
-  } catch (error) {
+  const { data } = await axiosInstance.delete<Response<TArtist>>(
+    `/artist/delete/${id}`
+  );
+  if (data?.success) {
     toast({
-      title: "error",
-      description: "Unable to delete artist",
+      title: "Success",
+      description: data?.message ?? "Artist deleted Successfully",
+    });
+    return data;
+  } else {
+    toast({
+      title: "Success",
+      description: data?.message ?? "Unable to delete artist",
     });
   }
 };

@@ -8,6 +8,8 @@ import { queryClient } from "@/App";
 import { QUERY_KEYS } from "@/data/constant";
 import { useState } from "react";
 import MutateUser from "./MutateUser";
+import { AxiosResponse, CustomError } from "@/types";
+import { toast } from "@/hooks/use-toast";
 
 const AddUser = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -15,15 +17,23 @@ const AddUser = () => {
     resolver: zodResolver(userFormSchema),
   });
 
-  const { mutate: mutateCreateUser } = useMutation(createUser, {
+  const { mutate: mutateCreateUser, isLoading } = useMutation(createUser, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER] });
       setOpenModal(false);
     },
+    onError: (error: AxiosResponse<CustomError>) => {
+      toast({
+        variant: "destructive",
+        title: "error",
+        description: error?.response?.data?.message ?? "Unable to create user",
+      });
+    }
   });
 
   return (
     <MutateUser
+      isLoading={isLoading}
       header="Add User"
       title="Add User"
       closeModal={() => setOpenModal((prev) => !prev)}

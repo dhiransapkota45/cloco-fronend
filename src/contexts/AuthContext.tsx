@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import axios, { all } from 'axios'
+import axios from 'axios'
 import { LoginFormData, TUser } from '@/types'
 import { login as loginApi, tokenValidate } from '@/service/api/auth'
 import Cookies from 'js-cookie'
@@ -62,6 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     Cookies.remove('authorization')
+    localStorage.clear()
     setUser(null)
     setIsAuthenticated(false)
   }

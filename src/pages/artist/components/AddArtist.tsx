@@ -1,6 +1,7 @@
 import { queryClient } from "@/App";
 import CustomInput from "@/components/CustomInput";
 import { Modal } from "@/components/Modal";
+import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
@@ -57,7 +58,6 @@ const AddArtist = ({ artist, title, header }: props) => {
 
   return (
     <Modal
-      isLoading={isLoading || isUpdateLoading}
       closeModal={() => setOpenModal((prev) => !prev)}
       open={openModal}
       header={header}
@@ -93,7 +93,9 @@ const AddArtist = ({ artist, title, header }: props) => {
             />
           ))}
           <DialogFooter className=" mt-4">
-            <Button type="submit">Save</Button>
+            <Button disabled={isLoading || isUpdateLoading} type="submit">
+              {(isLoading || isUpdateLoading) && <Spinner />} Save
+            </Button>
           </DialogFooter>
         </form>
       </Form>

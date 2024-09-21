@@ -16,11 +16,11 @@ type props = {
   isLoading?: boolean;
 };
 
-export function Modal({ children, header, title, open, closeModal, isLoading }: props) {
+export function Modal({ children, header, title, open, closeModal }: props) {
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogTrigger asChild>
-        <Button variant="outline">{isLoading && <span className=" spinner"></span>} {header}</Button>
+        <Button variant="outline">{header}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

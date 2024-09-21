@@ -6,7 +6,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { QUERY_KEYS } from "@/data/constant";
 import { createMusic, updateMusic } from "@/service/api/music";
-import { TMusic, TMusicPayload } from "@/types";
+import { AxiosResponse, CustomError, TMusic, TMusicPayload } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,8 @@ import { useMutation } from "react-query";
 import * as z from "zod";
 import useMusicFrom from "../hooks/use-music-from";
 import { useAuth } from "@/contexts/AuthContext";
+import Spinner from "@/components/Spinner";
+import { toast } from "@/hooks/use-toast";
 
 type props = {
   music?: TMusic;
@@ -29,14 +31,21 @@ const AddMusic = ({ music, title, header }: props) => {
     resolver: zodResolver(musicFormSchema),
   });
 
-  const { mutate: mutateMusic } = useMutation(createMusic, {
+  const { mutate: mutateMusic, isLoading: isMusicCreating } = useMutation(createMusic, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MUSIC] });
       setOpenModal(false);
     },
+    onError: (error: AxiosResponse<CustomError>) => {
+      toast({
+        variant: "destructive",
+        title: "error",
+        description: error?.response?.data?.message ?? "Unable to create music",
+      });
+    }
   });
 
-  const { mutate: mutateUpdateMusic } = useMutation(
+  const { mutate: mutateUpdateMusic, isLoading: isMusicUpdating } = useMutation(
     ({ body, id }: { body: Partial<TMusicPayload>; id: number }) =>
       updateMusic(body, id),
     {
@@ -44,6 +53,13 @@ const AddMusic = ({ music, title, header }: props) => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MUSIC] });
         setOpenModal(false);
       },
+      onError: (error: AxiosResponse<CustomError>) => {
+        toast({
+          variant: "destructive",
+          title: "error",
+          description: error?.response?.data?.message ?? "Unable to update music",
+        });
+      }
     }
   );
 
@@ -79,7 +95,7 @@ const AddMusic = ({ music, title, header }: props) => {
             />
           ))}
           <DialogFooter className=" mt-4">
-            <Button type="submit">Save</Button>
+            <Button disabled={isMusicCreating || isMusicUpdating} type="submit">{(isMusicCreating || isMusicUpdating) && <Spinner />} Save</Button>
           </DialogFooter>
         </form>
       </Form>

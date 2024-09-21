@@ -15,5 +15,9 @@ genderMap.set("m", "Male")
 genderMap.set("f", "Female")
 genderMap.set("o", "Other")
 
+export const roleMap = new Map()
+roleMap.set("artist_manager", "Artist Manager")
+roleMap.set("artist", "Artist")
+roleMap.set("super_admin", "Super Admin")
 
 export const LIMIT = 5

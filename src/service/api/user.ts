@@ -16,33 +16,26 @@ export const fetchUsers = async ({ limit = 10, offset }: Pagination) => {
 };
 
 export const createUser = async (body: TUserPayload) => {
-  try {
-    const { data } = await axiosInstance.post<Response<TUser>>(
-      "/user/create",
-      body
-    );
-    if (data?.success) {
-      toast({
-        title: "Success",
-        description: data?.message ?? "User created Successfully",
-      });
-      return data;
-    } else {
-      toast({
-        title: "Success",
-        description: data?.message ?? "Unable to create user",
-      });
-    }
-  } catch (error) {
+  const { data } = await axiosInstance.post<Response<TUser>>(
+    "/user/create",
+    body
+  );
+  if (data?.success) {
     toast({
-      title: "error",
-      description: "Unable to create user",
+      variant: "default",
+      title: "Success",
+      description: data?.message ?? "User created Successfully",
+    });
+    return data;
+  } else {
+    toast({
+      title: "Success",
+      description: data?.message ?? "Unable to create user",
     });
   }
 };
 
 export const updateUser = async (body: Partial<TUserPayload>, id: number) => {
-  try {
     const { data } = await axiosInstance.patch<Response<TUser>>(
       `/user/update/${id}`,
       body
@@ -59,16 +52,9 @@ export const updateUser = async (body: Partial<TUserPayload>, id: number) => {
         description: data?.message ?? "Unable to update user",
       });
     }
-  } catch (error) {
-    toast({
-      title: "error",
-      description: "Unable to update user",
-    });
-  }
 };
 
 export const deleteUser = async (id: number) => {
-  try {
     const { data } = await axiosInstance.delete<Response<TUser>>(
       `/user/delete/${id}`
     );
@@ -84,10 +70,4 @@ export const deleteUser = async (id: number) => {
         description: data?.message ?? "Unable to delete user",
       });
     }
-  } catch (error) {
-    toast({
-      title: "error",
-      description: "Unable to delete user",
-    });
-  }
 };

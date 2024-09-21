@@ -19,7 +19,6 @@ export const fetchMusic = async ({limit, offset, artist_id} : Pagination & {arti
 };
 
 export const createMusic = async (body: TMusicPayload) => {
-  try {
     const { data } = await axiosInstance.post<Response<TMusic>>(
       "/music/create",
       body
@@ -36,16 +35,9 @@ export const createMusic = async (body: TMusicPayload) => {
         description: data?.message ?? "Unable to create music",
       });
     }
-  } catch (error) {
-    toast({
-      title: "error",
-      description: "Unable to create music",
-    });
-  }
 };
 
 export const updateMusic = async (body: Partial<TMusicPayload>, id: number) => {
-  try {
     const { data } = await axiosInstance.patch<Response<TMusic>>(
       `/music/update/${id}`,
       body
@@ -62,16 +54,9 @@ export const updateMusic = async (body: Partial<TMusicPayload>, id: number) => {
         description: data?.message ?? "Unable to update music",
       });
     }
-  } catch (error) {
-    toast({
-      title: "error",
-      description: "Unable to update music",
-    });
-  }
 };
 
 export const deleteMusic = async (id: number) => {
-  try {
     const { data } = await axiosInstance.delete<Response<TMusic>>(
       `/music/delete/${id}`
     );
@@ -87,10 +72,4 @@ export const deleteMusic = async (id: number) => {
         description: data?.message ?? "Unable to delete music",
       });
     }
-  } catch (error) {
-    toast({
-      title: "error",
-      description: "Unable to delete music",
-    });
-  }
 };

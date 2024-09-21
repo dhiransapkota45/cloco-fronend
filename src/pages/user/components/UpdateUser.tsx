@@ -11,8 +11,9 @@ import { updateUser } from "@/service/api/user";
 import { queryClient } from "@/App";
 import { QUERY_KEYS } from "@/data/constant";
 import { useEffect, useState } from "react";
-import { TUser, TUserPayload } from "@/types";
+import { AxiosResponse, CustomError, TUser, TUserPayload } from "@/types";
 import MutateUser from "./MutateUser";
+import { toast } from "@/hooks/use-toast";
 
 type props = {
   header: string;
@@ -26,7 +27,7 @@ const UpdateUser = ({ header, title, userData }: props) => {
     resolver: zodResolver(userUpdateSchema),
   });
 
-  const { mutate: mutateUpdateUser } = useMutation(
+  const { mutate: mutateUpdateUser, isLoading } = useMutation(
     ({ body, id }: { body: Partial<TUserPayload>; id: number }) =>
       updateUser(body, id),
     {
@@ -34,6 +35,13 @@ const UpdateUser = ({ header, title, userData }: props) => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER] });
         setOpenModal(false);
       },
+      onError: (error: AxiosResponse<CustomError>) => {
+        toast({
+          variant: "destructive",
+          title: "error",
+          description: error?.response?.data?.message ?? "Unable to update user",
+        });
+      }
     }
   );
 
@@ -52,6 +60,7 @@ const UpdateUser = ({ header, title, userData }: props) => {
       submitHandler={(data) => {
         mutateUpdateUser({ body: data, id: Number(userData?.id) });
       }}
+      isLoading={isLoading}
       title={title}
       userFormDetails={userFormDetails.filter(
         (data) => data.name !== "password"

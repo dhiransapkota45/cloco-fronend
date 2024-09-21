@@ -45,7 +45,9 @@ export type TUser = {
 
 
 export type AxiosResponse<T> = {
-    data: T
+    response: {
+        data : T
+    }
     status: number
     statusText: string
     headers: any
@@ -106,4 +108,10 @@ export type ListResponse<T> = {
 export type Pagination = {
     offset: number
     limit: number
+}
+
+export type CustomError = {
+    message: string
+    status: number
+    success: any
 }
