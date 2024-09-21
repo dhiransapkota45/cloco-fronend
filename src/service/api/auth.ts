@@ -4,6 +4,7 @@ import {
   Response,
   TUser,
   TUserPayload,
+  TUserRegister,
 } from "@/types";
 import axiosInstance from "../axiosInstance";
 import { toast } from "@/hooks/use-toast";
@@ -26,7 +27,7 @@ export const login: (
   }
 };
 
-export const registerUser = async (body: TUserPayload) => {
+export const registerUser = async (body: TUserRegister) => {
   const { data } = await axiosInstance.post<Response<TUser>>(
     "/auth/register",
     body

@@ -12,6 +12,17 @@ export type Response<T> = {
     data?: T
 }
 
+export type TUserRegister = {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    phone: string;
+    dob : string;
+    gender : "m" | "f" | "o";
+    address : string;
+}
+
 export type TUserPayload = {
     first_name: string;
     last_name: string;
@@ -48,12 +59,14 @@ export type LoginResponse = {
 }
 
 export type TArtistPayload = {
-    name: string
+    first_name: string
+    last_name: string
     dob: string
     gender: "m" | "f" | "o"
     address: string
     first_release_year: string
     no_of_albums_released?:  string | undefined
+    user_id?: number
 }
 
 export type TPartialArtistPayload = Partial<TArtistPayload>;
@@ -62,6 +75,9 @@ export type TArtist = {
     id: number
     created_at: Date
     updated_at: Date
+    user_id: number
+    created_by: number
+    email : string
 } & TArtistPayload;
 
 export type TMusicPayload = {

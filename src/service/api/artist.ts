@@ -42,7 +42,7 @@ export const createArtist = async (body: TArtistPayload) => {
 };
 
 export const updateArtist = async (
-  body: Partial<TArtistPayload>,
+  body: Partial<TArtistPayload> ,
   id: number
 ) => {
   try {

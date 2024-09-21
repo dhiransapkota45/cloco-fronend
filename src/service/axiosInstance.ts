@@ -8,6 +8,7 @@ const baseURL = process.env.NODE_ENV === 'production' ? 'https://api.example.com
 
 const axiosInstance = axios.create({
   baseURL: `${baseURL}/api`,
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
     'authorization' : `Bearer ${Cookies.get("authorization")}`
@@ -19,11 +20,12 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async function (error) {
+    // TODO: need to implement refresh token logic
     const originalRequest = error.config;
-    // if (error.response?.status === 401 && !originalRequest._retry) {
-    //   Cookies.remove("authorization");
-    //   location.href = "/login";
-    // }
+    if (error.response?.status === 401 && !originalRequest._retry) {
+       Cookies.remove("authorization");
+       location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
