@@ -32,7 +32,7 @@ export default function MusicListingPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: [QUERY_KEYS.MUSIC],
+    queryKey: [QUERY_KEYS.MUSIC, offset, artistId],
     queryFn: () => fetchMusic({ limit: LIMIT, offset: offset, artist_id: Number(artistId) }),
     enabled: !!artistId
   });
@@ -56,10 +56,13 @@ export default function MusicListingPage() {
       </CardContent>
       <CardContent>
         <CustomPagination
-          totalItems={music?.data?.total ?? 0}
+          totalItems={Number(music?.data?.total) ?? 0}
           itemsPerPage={LIMIT}
           currentPage={offset / LIMIT + 1}
-          onPageChange={(page) => setOffset((page - 1) * LIMIT)}
+          onPageChange={(page) => {
+            console.log("function called", page);
+            setOffset((page - 1) * LIMIT)
+          }}
         />
       </CardContent>
     </Card>

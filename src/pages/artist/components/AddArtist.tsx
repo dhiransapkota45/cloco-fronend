@@ -65,6 +65,7 @@ const AddArtist = ({ artist, title, header }: props) => {
     >
       <Form {...form}>
         <form
+        className="flex flex-col gap-2 overflow-auto max-h-[80vh]"
           onSubmit={form.handleSubmit((data) => {
             if (artist) {
               mutateUpdateArtist({
@@ -92,7 +93,7 @@ const AddArtist = ({ artist, title, header }: props) => {
               fielddata={field}
             />
           ))}
-          <DialogFooter className=" mt-4">
+          <DialogFooter className=" mt-4 sticky bottom-0 bg-background">
             <Button disabled={isLoading || isUpdateLoading} type="submit">
               {(isLoading || isUpdateLoading) && <Spinner />} Save
             </Button>

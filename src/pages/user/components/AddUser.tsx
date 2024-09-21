@@ -21,6 +21,7 @@ const AddUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER] });
       setOpenModal(false);
+      form.reset();
     },
     onError: (error: AxiosResponse<CustomError>) => {
       toast({

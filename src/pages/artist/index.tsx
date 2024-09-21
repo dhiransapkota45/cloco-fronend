@@ -15,7 +15,7 @@ export default function UserListingPage() {
     data: artists,
     isLoading,
     error,
-  } = useQuery({ queryKey: QUERY_KEYS.ARTIST, queryFn: () => fetchArtists({ limit: LIMIT, offset: offset }) });
+  } = useQuery({ queryKey: [QUERY_KEYS.ARTIST, offset], queryFn: () => fetchArtists({ limit: LIMIT, offset: offset }) });
 
   const { user } = useAuth();
 
