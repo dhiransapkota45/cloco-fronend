@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import * as z from "zod";
 import useMusicFrom from "../hooks/use-music-from";
+import { useAuth } from "@/contexts/AuthContext";
 
 type props = {
   music?: TMusic;
@@ -22,7 +23,8 @@ type props = {
 
 const AddMusic = ({ music, title, header }: props) => {
   const [openModal, setOpenModal] = useState(false);
-  const { musicFormInputs, musicFormSchema, isArtistLoading } = useMusicFrom();
+  const { user } = useAuth();
+  const { musicFormInputs, musicFormSchema } = useMusicFrom();
   const form = useForm<z.infer<typeof musicFormSchema>>({
     resolver: zodResolver(musicFormSchema),
   });
@@ -44,12 +46,12 @@ const AddMusic = ({ music, title, header }: props) => {
       },
     }
   );
+
   useEffect(() => {
-    if (music && !isArtistLoading) {
+    if (music) {
       form.reset(music);
-      form.setValue("artist_id", music.artist_id.toString());
     }
-  }, [music, isArtistLoading]);
+  }, [music]);
 
   return (
     <Modal
@@ -64,7 +66,8 @@ const AddMusic = ({ music, title, header }: props) => {
             if (music) {
               mutateUpdateMusic({ body: data, id: music.id });
             } else {
-              mutateMusic({ ...data, artist_id: Number(data.artist_id) });
+              console.log(user?.id)
+              mutateMusic({ ...data, artist_id: Number(user?.id) });
             }
           })}
         >

@@ -43,9 +43,9 @@ export default function MusicListingPage() {
     <Card className="h-full flex flex-col ">
       <CardHeader className=" flex flex-row items-center justify-between">
         <CardTitle>Music</CardTitle>
-        <div>
+        {user?.role === "artist" && <div>
           <AddMusic header="Add Music" title="Add Music" />
-        </div>
+        </div>}
       </CardHeader>
       <CardContent className=" flex-1">
         <TableWrapper headers={["S.No", "Title", "Album", "Genre", "Artist", "Action"]} isLoading={isLoading} length={music?.data?.data.length ?? 0}>

@@ -2,12 +2,14 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { TMusic } from "@/types";
 import AddMusic from "./AddMusic";
 import DeleteMusic from "./DeleteMusic";
+import { useAuth } from "@/contexts/AuthContext";
 type props = {
   track: TMusic;
   index: number;
   offset: number;
 };
 const MusicRow = ({ index, track, offset }: props) => {
+  const { isLoading, user } = useAuth();
   return (
     <TableRow>
       <TableCell>{offset + (++index)}</TableCell>
@@ -16,8 +18,8 @@ const MusicRow = ({ index, track, offset }: props) => {
       <TableCell>{track.genre}</TableCell>
       <TableCell>{track.artist_name}</TableCell>
       <TableCell className=" flex gap-2">
-        <AddMusic music={track} header="Edit Music" title="Edit Music" />
-        <DeleteMusic music={track} />
+        {!isLoading && (user?.role === "artist" ? <> <AddMusic music={track} header="Edit Music" title="Edit Music" />
+          <DeleteMusic music={track} /> </> : "Not Authorized")}
       </TableCell>
     </TableRow>
   );

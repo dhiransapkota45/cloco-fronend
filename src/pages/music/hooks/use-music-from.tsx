@@ -1,8 +1,4 @@
-import { QUERY_KEYS } from "@/data/constant";
 import { FieldDetails } from "@/data/user-form";
-import { fetchArtists } from "@/service/api/artist";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import * as z from "zod";
 
 const musicFormDetails: FieldDetails[] = [
@@ -28,50 +24,30 @@ const musicFormDetails: FieldDetails[] = [
       { label: "Jazz", value: "jazz" },
     ],
   },
-  {
-    name: "artist_id",
-    label: "Artist",
-    type: "select",
-    options: [],
-  },
+  // {
+  //   name: "artist_id",
+  //   label: "Artist",
+  //   type: "select",
+  //   options: [],
+  // },
 ];
 
 const useMusicFrom = () => {
-  const { data: artists, isLoading: isArtistLoading } = useQuery({
-    queryKey: QUERY_KEYS.ARTIST,
-    queryFn: () => fetchArtists({ limit: 1000, offset: 0 }),
-  });
+  // const { data: artists, isLoading: isArtistLoading } = useQuery({
+  //   queryKey: QUERY_KEYS.ARTIST,
+  //   queryFn: () => fetchArtists({ limit: 1000, offset: 0 }),
+  // });
 
   const musicFormSchema = z.object({
     title: z.string().min(1, "Title is required"),
     album_name: z.string().min(1, "Album name is required"),
     genre: z.string().min(1, "Genre is required"),
-    artist_id: z.any().refine((val) => Number(val) > 0, {
-      message: "Artist is required",
-    }),
+    // artist_id: z.any().refine((val) => Number(val) > 0, {
+    //   message: "Artist is required",
+    // }),
   });
 
-  const [musicFormInputs, setMusicFormInputs] = useState(musicFormDetails);
-  useEffect(() => {
-    if (artists) {
-      const artistOptions = artists?.data?.data.map((artist) => ({
-        label: artist.name,
-        value: artist.id.toString(),
-      }));
-      setMusicFormInputs((prev) => {
-        return prev.map((input) => {
-          if (input.name === "artist_id") {
-            return {
-              ...input,
-              options: artistOptions,
-            };
-          }
-          return input;
-        });
-      });
-    }
-  }, [artists]);
-  return { musicFormInputs, musicFormSchema, isArtistLoading };
+  return { musicFormInputs : musicFormDetails, musicFormSchema };
 };
 
 export default useMusicFrom;
