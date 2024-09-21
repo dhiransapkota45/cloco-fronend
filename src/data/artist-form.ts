@@ -1,11 +1,32 @@
+import { EMAIL_REGEX, PHONE_REGEX } from "./constant";
 import { FieldDetails } from "./user-form";
 import * as z from "zod";
 
 export const artistFormDetails: FieldDetails[] = [
   {
-    label: "Artist Name",
-    name: "name",
+    label: "First Name",
+    name: "first_name",
     type: "text",
+  },
+  {
+    label: "Last Name",
+    name: "last_name",
+    type: "text",
+  },
+  {
+    label: "Email",
+    name: "email",
+    type: "email",
+  },
+  {
+    label: "Password",
+    name: "password",
+    type: "password",
+  },
+  {
+    label: "Phone",
+    name: "phone",
+    type: "number",
   },
   {
     label: "Date of Birth",
@@ -28,6 +49,15 @@ export const artistFormDetails: FieldDetails[] = [
     type: "text",
   },
   {
+    label: "Role",
+    name: "role",
+    type: "select",
+    options: [
+      { label: "Artist", value: "artist" },
+    ],
+  },
+  
+  {
     label: "First Release Year",
     name: "first_release_year",
     type: "number",
@@ -40,14 +70,21 @@ export const artistFormDetails: FieldDetails[] = [
 ];
 
 export const artistFormSchema = z.object({
-  name: z.string().min(1, "Artist name is required"),
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .regex(EMAIL_REGEX, "Invalid email format"),
   dob: z.string().min(1, "Date of birth is required"),
   gender: z.enum(["m", "f", "o"]),
   address: z.string().min(1, "Address is required"),
-  first_release_year: z
-    .any()
-    .refine((val) => Number(val) > 0, {
-      message: "First release year is required",
-    }),
+  role: z.enum(["super_admin", "artist_manager", "artist"]),
+  phone: z
+    .string()
+    .min(1, "Phone number is required")
+    .regex(PHONE_REGEX, "Invalid phone number format"),
+  first_release_year: z.any(),
   no_of_albums_released: z.any().optional(),
+  password: z.string().min(8, "Password should be minimum 8 characters"),
 });

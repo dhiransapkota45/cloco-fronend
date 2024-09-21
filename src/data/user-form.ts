@@ -81,9 +81,9 @@ export const userFormDetails: FieldDetails[] = [
     name: "role",
     type: "select",
     options: [
-      { label: "Super Admin", value: "super_admin" },
+      // { label: "Super Admin", value: "super_admin" },
       { label: "Artist Manager", value: "artist_manager" },
-      { label: "Artist", value: "artist" },
+      // { label: "Artist", value: "artist" },
     ],
   },
 ];
