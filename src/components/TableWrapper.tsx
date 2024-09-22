@@ -22,7 +22,11 @@ const TableWrapper = ({ children, headers, isLoading, length }: props) => {
             <TableBody>
                 {isLoading ?
                     <TableSkeleton headerCount={4} /> : length === 0
-                        ? ("no data found") : children}
+                        ?
+                        <TableRow >
+                            <TableHead className=' text-center py-10' colSpan={headers.length}>No data found</TableHead>
+                        </TableRow>
+                        : children}
             </TableBody>
         </Table>
     )

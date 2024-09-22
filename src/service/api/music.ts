@@ -73,3 +73,23 @@ export const deleteMusic = async (id: number) => {
       });
     }
 };
+
+
+export const bulkUploadMusic = async (body: TMusicPayload[]) => {
+    const { data } = await axiosInstance.post<Response<TMusic>>(
+      "/music/create/bulk",
+      body
+    );
+    if (data?.success) {
+      toast({
+        title: "Success",
+        description: data?.message ?? "Music uploaded Successfully",
+      });
+      return data;
+    } else {
+      toast({
+        title: "Success",
+        description: data?.message ?? "Unable to upload music",
+      });
+    }
+};

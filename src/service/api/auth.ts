@@ -1,9 +1,10 @@
 import {
+  AxiosResponse,
+  CustomError,
   LoginFormData,
   LoginResponse,
   Response,
   TUser,
-  TUserPayload,
   TUserRegister,
 } from "@/types";
 import axiosInstance from "../axiosInstance";
@@ -19,9 +20,11 @@ export const login: (
     );
     return response.data;
   } catch (error: any) {
+    console.log(error)
     toast({
+      variant: "destructive",
       title: "Error",
-      description: error?.message ?? "Invalid email or password",
+      description: error?.response?.data?.message ?? "Invalid email or password",
     });
     return null;
   }
