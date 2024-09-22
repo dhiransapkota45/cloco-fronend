@@ -1,50 +1,70 @@
-# React + TypeScript + Vite
+# Frontend Application for Artist Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the React.js frontend application that interacts with the backend API for managing artists, music, and users. It uses React Query for state management and caching, and Axios for handling HTTP requests to the backend API. Uses ShadcnUI for generating reusable UI components with tailwindCSS.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React.js**: Core frontend framework for building the user interface.
+- **React Query**: Data fetching, caching, synchronization, and more for React applications.
+- **Component-Based Architecture**: Clean, modular structure with reusable components.
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Prerequisites
 
-- Configure the top-level `parserOptions` property like this:
+Make sure you have the following installed:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Node.js**: >= 16.x
+- **Yarn**: Package manager (or you can use npm)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Step-by-step Setup
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. **Clone the repository**:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+    ```bash
+    git clone https://github.com/yourusername/your-frontend-repo.git
+    ```
+
+2. **Install dependencies**:
+
+    Navigate to the project directory and run:
+
+    ```bash
+    cd your-frontend-repo
+    npm install
+    ```
+
+3. **Environment Variables**:
+
+    Create a `.env` file in the root directory as provided in ```.env.example``` file
+
+4. **Start the Development Server**:
+
+    To start the frontend development server, run:
+
+    ```bash
+    npm run dev
+    ```
+
+    This will start the application on `http://localhost:5173`.
+
+5. **Build for Production**:
+
+    To build the application for production, use:
+
+    ```bash
+    npm run build
+    ```
+
+    This will create an optimized production build in the `build/` folder.
+
+## Project Structure
+
+```bash
+src/
+├── components/         # Reusable UI components
+├── pages/              # Page components for different routes
+├── hooks/              # Custom React hooks
+├── services/           # Axios setup and API request services
+├── contexts/           # Context for handling overall state of application
+└── App.js              # Main entry point for the application
