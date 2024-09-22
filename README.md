@@ -22,7 +22,7 @@ Make sure you have the following installed:
 1. **Clone the repository**:
 
     ```bash
-    git clone https://github.com/yourusername/your-frontend-repo.git
+    git clone [https://github.com/yourusername/your-frontend-repo.git](https://github.com/dhiransapkota45/cloco-fronend.git)
     ```
 
 2. **Install dependencies**:
@@ -30,7 +30,7 @@ Make sure you have the following installed:
     Navigate to the project directory and run:
 
     ```bash
-    cd your-frontend-repo
+    cd cloco-frontend
     npm install
     ```
 
