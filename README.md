@@ -22,7 +22,7 @@ Make sure you have the following installed:
 1. **Clone the repository**:
 
     ```bash
-    git clone [https://github.com/yourusername/your-frontend-repo.git](https://github.com/dhiransapkota45/cloco-fronend.git)
+    git clone https://github.com/dhiransapkota45/cloco-fronend
     ```
 
 2. **Install dependencies**:
