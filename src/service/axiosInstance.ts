@@ -1,18 +1,15 @@
-// generate axios instance
-
 import axios from "axios";
 import Cookies from "js-cookie";
 
-//TODO: Change the baseURL to actual API URL and use environment variables
-const baseURL = process.env.NODE_ENV === 'production' ? 'https://api.example.com' : 'http://localhost:8000';
+const baseURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 const axiosInstance = axios.create({
   baseURL: `${baseURL}/api`,
   timeout: 20000,
   headers: {
-    'Content-Type': 'application/json',
-    'authorization' : `Bearer ${Cookies.get("authorization")}`
-  }
+    "Content-Type": "application/json",
+    authorization: `Bearer ${Cookies.get("authorization")}`,
+  },
 });
 
 axiosInstance.interceptors.response.use(
@@ -23,9 +20,9 @@ axiosInstance.interceptors.response.use(
     // TODO: need to implement refresh token logic
     const originalRequest = error.config;
     if (error.response?.status === 401 && !originalRequest._retry) {
-       Cookies.remove("authorization");
-       localStorage.clear();
-       location.href = "/login";
+      Cookies.remove("authorization");
+      localStorage.clear();
+      location.href = "/login";
     }
     return Promise.reject(error);
   }
