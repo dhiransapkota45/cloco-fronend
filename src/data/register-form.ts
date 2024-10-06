@@ -3,20 +3,20 @@ import { FieldDetails } from "./user-form";
 import * as z from "zod";
 
 export const registerSchema = z.object({
-  first_name: z.string().min(1, "First name is required"),
-  last_name: z.string().min(1, "Last name is required"),
+  first_name: z.string({message : "First name is required"}).min(1, "First name is required"),
+  last_name: z.string({message : "Last name is required"}).min(1, "Last name is required"),
   email: z
-    .string()
+    .string({message : "Email is required"})
     .min(1, "Email is required")
     .regex(EMAIL_REGEX, "Invalid email format"),
-  dob: z.string().min(1, "Date of birth is required"),
-  gender: z.enum(["m", "f", "o"]),
-  address: z.string().min(1, "Address is required"),
+  dob: z.string({message : "Date of birth is required"}).min(1, "Date of birth is required"),
+  gender: z.enum(["m", "f", "o"], {message : "gender  is required"}),
+  address: z.string({message : "Address is required"}).min(1, "Address is required"),
   phone: z
-    .string()
+    .string({message : "Phone number is required"})
     .min(1, "Phone number is required")
     .regex(PHONE_REGEX, "Invalid phone number format"),
-  password: z.string().min(8, "Password should be minimum 8 characters"),
+  password: z.string({message : "Password is required"}).min(8, "Password should be minimum 8 characters"),
 });
 
 

@@ -33,7 +33,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       validateToken()
     } else {
       setIsLoading(false)
-      navigate("/login")
+      if(location.pathname !== "/register"){
+        navigate("/login")
+      }
     }
   }, [])
 

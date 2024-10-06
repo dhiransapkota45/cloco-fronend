@@ -63,7 +63,7 @@ export default function MusicListingPage() {
   }
 
   const handleDownload = async () => {
-    let csv = "Title,Album,Genre\n"
+    let csv = "title,album_name,genre\n"
 
     const musicData = allMusic?.data?.data as TMusicPayload[]
     musicData.forEach(track => {
@@ -87,7 +87,6 @@ export default function MusicListingPage() {
         const rows = text.split('\n').map(row => row.split(','))
 
         const headers = rows[0].map(header => header.trim().toLowerCase())
-        console.log(headers)
         const titleIndex = headers.indexOf('title')
         const albumIndex = headers.indexOf('album_name')
         const genreIndex = headers.indexOf('genre')
@@ -163,12 +162,12 @@ export default function MusicListingPage() {
               {isAllMusicLoading ? <Spinner /> : <CloudDownload />}
             </Button>
             <div className="flex items-center space-x-2">
-              <Label htmlFor="file">
-                <Button variant={"outline"}>
-                  <CloudUpload />
+                <Button onClick={()=>console.log("button clicked")} variant={"outline"}>
+                  <Label htmlFor="file">
+                      <CloudUpload />
+                  </Label>
+                <Input className="hidden" type="file" id="file" accept=".csv" onChange={handleFileChange} />
                 </Button>
-              </Label>
-              <Input className="hidden" type="file" id="file" accept=".csv" onChange={handleFileChange} />
               <Button onClick={handleUpload} disabled={!file}>
                 Upload CSV
               </Button>

@@ -7,8 +7,9 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { artistFormDetails, artistFormSchema } from "@/data/artist-form";
 import { QUERY_KEYS } from "@/data/constant";
+import { toast } from "@/hooks/use-toast";
 import { createArtist, updateArtist } from "@/service/api/artist";
-import { TArtist, TArtistPayload } from "@/types";
+import { AxiosResponse, CustomError, TArtist, TArtistPayload } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -32,6 +33,13 @@ const AddArtist = ({ artist, title, header }: props) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ARTIST] });
       setOpenModal(false);
     },
+    onError: (error: AxiosResponse<CustomError>) => {
+      toast({
+        variant: "destructive",
+        title: "error",
+        description: error?.response?.data?.message ?? "Unable to create user",
+      });
+    }
   });
 
   const { mutate: mutateUpdateArtist, isLoading: isUpdateLoading } = useMutation(

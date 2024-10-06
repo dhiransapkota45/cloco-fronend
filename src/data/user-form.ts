@@ -10,18 +10,18 @@ export type FieldDetails = {
 };
 
 export const userUpdateSchema = z.object({
-  first_name: z.string().min(1, "First name is required"),
-  last_name: z.string().min(1, "Last name is required"),
+  first_name: z.string({message : "First name is required"}).min(1, "First name is required"),
+  last_name: z.string({message : "Last name is required"}).min(1, "Last name is required"),
   email: z
-    .string()
+    .string({message : "Email is required"})
     .min(1, "Email is required")
     .regex(EMAIL_REGEX, "Invalid email format"),
-  dob: z.string().min(1, "Date of birth is required"),
-  gender: z.enum(["m", "f", "o"]),
-  address: z.string().min(1, "Address is required"),
-  role: z.enum(["super_admin", "artist_manager", "artist"]),
+  dob: z.string({message : "dob is required"}).min(1, "Date of birth is required"),
+  gender: z.enum(["m", "f", "o"], {message :"gender is required"}),
+  address: z.string({message : "address is required"}).min(1, "Address is required"),
+  role: z.enum(["super_admin", "artist_manager", "artist"], {message : "role is required"}),
   phone: z
-    .string()
+    .string({message : "Phone number is required"})
     .min(1, "Phone number is required")
     .regex(PHONE_REGEX, "Invalid phone number format"),
 });

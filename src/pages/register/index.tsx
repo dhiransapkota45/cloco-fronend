@@ -34,6 +34,7 @@ export default function RegisterPage() {
     },
     onError: (error : AxiosError<Response<null>>) => {
       toast({
+        variant: "destructive",
         title: "Error",
         description: error?.response?.data?.message ?? "Unable to create user",
       });
